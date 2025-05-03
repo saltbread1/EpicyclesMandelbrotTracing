@@ -1,39 +1,17 @@
-# Processing Template for Kotlin
+# Mandelbrot Boundary Tracing with Epicycles
 
-A template of [Processing](https://processing.org/) for Kotlin.
+Drawing of the boundary of Mandelbrot set with epicycles by Fourier series expansion.
+
+<img width="320" src="https://github.com/saltbread1/EpicyclesMandelbrotTracing/blob/main/sample.png">
 
 ## Libraries
 
 - [Processing 4.3.4](org.processing:core:4.3.4)
 
-## Usage
+## Referemces
 
-### Clone repository
-
-```
-git clone https://github.com/saltbread1/ProcessingTemplateForKotlin.git
-cd ProcessingTemplateForKotlin
-```
-
-### Run Main.kt
-
-```
-./gradlew run
-```
-or using custom task:
-```
-./gradlew runMain
-```
-
-### Build Main.kt
-
-```
-./gradlew shadowJar
-```
-or using custom task:
-```
-./gradlew fatJarMain
-```
+- JUNGREIS, Irwin. The uniformization of the complement of the Mandelbrot set. 1985.
+- EWING, John H.; SCHOBER, Glenn. The area of the Mandelbrot set. Numerische Mathematik, 1992, 61.1: 59-72.
 
 ## Author
 
@@ -41,4 +19,4 @@ or using custom task:
 
 ## License
 
-[MIT License](https://github.com/saltbread1/ProcessingTemplateForKotlin/blob/main/LICENSE)
+[MIT License](https://github.com/saltbread1/EpicyclesMandelbrotTracing/blob/main/LICENSE)
