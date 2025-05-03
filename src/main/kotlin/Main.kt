@@ -2,9 +2,12 @@ import processing.core.PApplet
 import processing.core.PGraphics
 import processing.core.PShape
 import processing.core.PVector
+import java.io.File
+import java.util.*
 
 class Main : PApplet()
 {
+    // properties
     companion object
     {
         // number of cycle which equals to number of terms of Fourier series
@@ -17,16 +20,21 @@ class Main : PApplet()
         private const val Y_MAX =  1.5f
 
         private const val DELTA_TIME = 1.0e-5f
-        private const val DISPLAY_INTERVAL = 50
+        private const val DISPLAY_INTERVAL = 100
         private const val TOTAL_TIME = 1.0f
 
         private const val PIXEL_DENSITY = 2
+
+        private const val OUT_DIR = "output"
+        private const val IS_RECORD = false
+        private const val FRAME_RATE = 30
     }
 
     private lateinit var mandelbrot: PGraphics
     private lateinit var fourierCoeff: DoubleArray
     private var time: Float = 0.0f
     private val boundaryPos: MutableList<PVector> = mutableListOf()
+    private val startTimeStamp = timestamp()
 
     override fun settings()
     {
@@ -36,7 +44,7 @@ class Main : PApplet()
 
     override fun setup()
     {
-        frameRate(30.0f)
+        frameRate(FRAME_RATE.toFloat())
         ortho(X_MIN, X_MAX, Y_MIN, Y_MAX, -1.0f, 1.0f)
         camera(0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f)
 
@@ -77,7 +85,7 @@ class Main : PApplet()
             return
         }
 
-        background(0)
+        background(0f)
         image(mandelbrot, X_MIN, Y_MIN, X_MAX - X_MIN, Y_MAX - Y_MIN)
 
         // calculate boundary position
@@ -105,7 +113,7 @@ class Main : PApplet()
 
         // draw boundary
         pushStyle()
-        stroke(0f)
+        stroke(0xfff33e00.toInt())
         strokeWeight(2.0f)
         for (i in 1 until boundaryPos.size)
         {
@@ -114,6 +122,11 @@ class Main : PApplet()
             line(pos1.x, pos1.y, pos2.x, pos2.y)
         }
         popStyle()
+
+        if (IS_RECORD)
+        {
+            saveFrame(OUT_DIR + File.separator + startTimeStamp + File.separator + "#####.png")
+        }
     }
 
     private fun update()
@@ -124,9 +137,42 @@ class Main : PApplet()
             val degree = 1 - i
             pos.add(PVector.fromAngle(time * degree * TAU).mult(fourierCoeff[i].toFloat()))
         }
-        boundaryPos.add(pos)
+        if (boundaryPos.isEmpty())
+        {
+            boundaryPos.add(pos)
+        }
+        else
+        {
+            val prev = boundaryPos.last()
+            val diff = PVector.sub(prev, pos)
+            if (abs(diff.x) > (X_MAX - X_MIN) / width && abs(diff.y) > (Y_MAX - Y_MIN) / height)
+            { // resolution check
+                boundaryPos.add(pos)
+            }
+        }
 
         time += DELTA_TIME
+    }
+
+    override fun keyPressed()
+    {
+        when (key)
+        {
+            's' -> save(OUT_DIR + File.separator + timestamp() + ".png")
+        }
+    }
+
+    private fun timestamp(): String
+    {
+        val year = Calendar.getInstance()[Calendar.YEAR]
+        val month = Calendar.getInstance()[Calendar.MONTH] + 1
+        val date = Calendar.getInstance()[Calendar.DATE]
+        val hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+        val minute = Calendar.getInstance()[Calendar.MINUTE]
+        val second = Calendar.getInstance()[Calendar.SECOND]
+        val day = String.format("%04d", year) + String.format("%02d", month) + String.format("%02d", date)
+        val time = String.format("%02d", hour) + String.format("%02d", minute) + String.format("%02d", second)
+        return day + time
     }
 }
 
