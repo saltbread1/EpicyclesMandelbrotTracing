@@ -8,7 +8,7 @@ Drawing of the boundary of Mandelbrot set with epicycles by Fourier series expan
 
 - [Processing 4.3.4](org.processing:core:4.3.4)
 
-## Referemces
+## References
 
 - JUNGREIS, Irwin. The uniformization of the complement of the Mandelbrot set. 1985.
 - EWING, John H.; SCHOBER, Glenn. The area of the Mandelbrot set. Numerische Mathematik, 1992, 61.1: 59-72.
